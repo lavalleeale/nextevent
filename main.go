@@ -46,9 +46,13 @@ func main() {
 
 	for _, e := range events {
 		if e.Start.After(time.Now().Add(time.Minute * -5)) {
-			untilStart := e.Start.Sub(time.Now()).Round(time.Minute).String()
-			untilStart = untilStart[:len(untilStart)-2]
-			fmt.Printf("%s in %s\n", e.Summary, untilStart)
+			untilStart := e.Start.Sub(time.Now()).Round(time.Minute)
+			untilStartStr := untilStart.String()[:len(untilStart.String())-2]
+			if untilStart < 0 {
+				fmt.Printf("%s %s ago\n", e.Summary, untilStartStr[1:])
+			} else {
+				fmt.Printf("%s in %s\n", e.Summary, untilStartStr)
+			}
 			break
 		}
 	}
